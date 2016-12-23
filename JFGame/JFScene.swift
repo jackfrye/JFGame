@@ -51,16 +51,43 @@ class GameScene: SKScene {
         HEIGHT = (self.view?.scene?.size.height)!
         WIDTH = (self.view?.scene?.size.width)!
         
+        panel = SKSpriteNode(color: UIColor(red: CGFloat(37.0/255), green: CGFloat(150.0/255), blue: CGFloat(18.0/255), alpha: CGFloat(1.0)), size: CGSize(width: PANEL_WIDTH, height: PANEL_HEIGHT))
+        panel.position = PANEL_POSITION
+        
+        let rightButton = SKSpriteNode(imageNamed: "LeftButton")
+        rightButton.size = CGSize(width: WIDTH / 5.5, height: HEIGHT / 18)
+        rightButton.position = CGPoint(x: -WIDTH * (38 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 16)
+        
+        let leftButton = SKSpriteNode(imageNamed: "RightButton")
+        leftButton.size = CGSize(width: WIDTH / 5.5, height: HEIGHT / 18)
+        leftButton.position = CGPoint(x: -WIDTH * (15 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 16)
+        
+        let jButton = SKSpriteNode(imageNamed: "JButton")
+        jButton.size = CGSize(width: HEIGHT / 16, height: HEIGHT / 16)
+        jButton.position = CGPoint(x: WIDTH * (15 / 100.0), y: PANEL_POSITION.y - PANEL_HEIGHT / 12)
+        
+        let cButton = SKSpriteNode(imageNamed: "CButton")
+        cButton.size = CGSize(width: HEIGHT / 16, height: HEIGHT / 16)
+        cButton.position = CGPoint(x: WIDTH * (25 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 5.7)
+        
+        let fButton = SKSpriteNode(imageNamed: "FButton")
+        fButton.size = CGSize(width: HEIGHT / 16, height: HEIGHT / 16)
+        fButton.position = CGPoint(x: WIDTH * (35 / 100.0), y: PANEL_POSITION.y - PANEL_HEIGHT / 12)
+        
+        
+        self.addChild(panel)
+        self.addChild(rightButton)
+        self.addChild(leftButton)
+        self.addChild(jButton)
+        self.addChild(cButton)
+        self.addChild(fButton)
+        
         if DEBUG {
             print(HEIGHT)
             print(WIDTH)
             print(PANEL_POSITION)
             print(CGSize(width: PANEL_WIDTH, height: PANEL_HEIGHT))
         }
-        
-        panel = SKSpriteNode(color: UIColor.blue, size: CGSize(width: PANEL_WIDTH, height: PANEL_HEIGHT))
-        panel.position = PANEL_POSITION
-        self.addChild(panel)
     }
     
     
