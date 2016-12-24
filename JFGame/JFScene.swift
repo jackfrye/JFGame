@@ -44,6 +44,40 @@ class GameScene: SKScene {
         }
     }
     
+    var jButton: SKSpriteNode = SKSpriteNode()
+    
+    var cButton: SKSpriteNode  = SKSpriteNode()
+    
+    var fButton: SKSpriteNode  = SKSpriteNode()
+    
+    var leftButton: SKSpriteNode  = SKSpriteNode()
+    
+    var rightButton: SKSpriteNode  = SKSpriteNode()
+    
+    var j: () -> (Void) = {
+        return
+    }
+    
+    var c: () -> (Void) = {
+        return
+    }
+    
+    var f: () -> (Void) = {
+        return
+    }
+    
+    var left: () -> (Void) = {
+        return
+    }
+    
+    var right: () -> (Void) = {
+        return
+    }
+    
+    var functionsMap: [String: () -> (Void)] = [String: () -> (Void)]()
+    
+    var updateActions: [String] = [String]()
+    
     
     var panel: SKNode = SKNode()
     
@@ -54,26 +88,33 @@ class GameScene: SKScene {
         panel = SKSpriteNode(color: UIColor(red: CGFloat(37.0/255), green: CGFloat(150.0/255), blue: CGFloat(18.0/255), alpha: CGFloat(1.0)), size: CGSize(width: PANEL_WIDTH, height: PANEL_HEIGHT))
         panel.position = PANEL_POSITION
         
-        let rightButton = SKSpriteNode(imageNamed: "LeftButton")
-        rightButton.size = CGSize(width: WIDTH / 5.5, height: HEIGHT / 18)
-        rightButton.position = CGPoint(x: -WIDTH * (38 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 16)
-        
-        let leftButton = SKSpriteNode(imageNamed: "RightButton")
-        leftButton.size = CGSize(width: WIDTH / 5.5, height: HEIGHT / 18)
-        leftButton.position = CGPoint(x: -WIDTH * (15 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 16)
-        
-        let jButton = SKSpriteNode(imageNamed: "JButton")
+        jButton = SKSpriteNode(imageNamed: "JButton")
         jButton.size = CGSize(width: HEIGHT / 16, height: HEIGHT / 16)
         jButton.position = CGPoint(x: WIDTH * (15 / 100.0), y: PANEL_POSITION.y - PANEL_HEIGHT / 12)
         
-        let cButton = SKSpriteNode(imageNamed: "CButton")
+        cButton = SKSpriteNode(imageNamed: "CButton")
         cButton.size = CGSize(width: HEIGHT / 16, height: HEIGHT / 16)
         cButton.position = CGPoint(x: WIDTH * (25 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 5.7)
         
-        let fButton = SKSpriteNode(imageNamed: "FButton")
+        fButton = SKSpriteNode(imageNamed: "FButton")
         fButton.size = CGSize(width: HEIGHT / 16, height: HEIGHT / 16)
         fButton.position = CGPoint(x: WIDTH * (35 / 100.0), y: PANEL_POSITION.y - PANEL_HEIGHT / 12)
         
+        leftButton = SKSpriteNode(imageNamed: "RightButton")
+        leftButton.size = CGSize(width: WIDTH / 5.5, height: HEIGHT / 18)
+        leftButton.position = CGPoint(x: -WIDTH * (15 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 16)
+        
+        rightButton = SKSpriteNode(imageNamed: "LeftButton")
+        rightButton.size = CGSize(width: WIDTH / 5.5, height: HEIGHT / 18)
+        rightButton.position = CGPoint(x: -WIDTH * (38 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 16)
+        
+        functionsMap = [
+            "j": j,
+            "c": c,
+            "f": f,
+            "left": left,
+            "right": right
+        ]
         
         self.addChild(panel)
         self.addChild(rightButton)
