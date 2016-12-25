@@ -9,6 +9,7 @@
 import SpriteKit
 import GameplayKit
 
+
 class GameScene: SKScene {
     
     let DEBUG = true
@@ -54,30 +55,17 @@ class GameScene: SKScene {
     
     var rightButton: SKSpriteNode  = SKSpriteNode()
     
-    var j: () -> (Void) = {
-        return
-    }
-    
-    var c: () -> (Void) = {
-        return
-    }
-    
-    var f: () -> (Void) = {
-        return
-    }
-    
-    var left: () -> (Void) = {
-        return
-    }
-    
-    var right: () -> (Void) = {
-        return
-    }
-    
     var functionsMap: [String: () -> (Void)] = [String: () -> (Void)]()
     
-    var updateActions: [String] = [String]()
+    var buttons: [SKSpriteNode] = [SKSpriteNode]()
     
+    var updateActions: Dictionary<String, UITouch?> = [
+        "j": nil,
+        "c": nil,
+        "f": nil,
+        "left": nil,
+        "right": nil
+    ]
     
     var panel: SKNode = SKNode()
     
@@ -91,22 +79,33 @@ class GameScene: SKScene {
         jButton = SKSpriteNode(imageNamed: "JButton")
         jButton.size = CGSize(width: HEIGHT / 16, height: HEIGHT / 16)
         jButton.position = CGPoint(x: WIDTH * (15 / 100.0), y: PANEL_POSITION.y - PANEL_HEIGHT / 12)
+        jButton.name = "j"
+        jButton.isUserInteractionEnabled = false
         
         cButton = SKSpriteNode(imageNamed: "CButton")
         cButton.size = CGSize(width: HEIGHT / 16, height: HEIGHT / 16)
         cButton.position = CGPoint(x: WIDTH * (25 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 5.7)
+        cButton.name = "c"
+        cButton.isUserInteractionEnabled = false
         
         fButton = SKSpriteNode(imageNamed: "FButton")
         fButton.size = CGSize(width: HEIGHT / 16, height: HEIGHT / 16)
         fButton.position = CGPoint(x: WIDTH * (35 / 100.0), y: PANEL_POSITION.y - PANEL_HEIGHT / 12)
+        fButton.name = "f"
+        fButton.isUserInteractionEnabled = false
         
-        leftButton = SKSpriteNode(imageNamed: "RightButton")
+        leftButton = SKSpriteNode(imageNamed: "LeftButton")
         leftButton.size = CGSize(width: WIDTH / 5.5, height: HEIGHT / 18)
-        leftButton.position = CGPoint(x: -WIDTH * (15 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 16)
+        leftButton.position = CGPoint(x: -WIDTH * (38 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 16)
+        leftButton.name = "left"
+        leftButton.isUserInteractionEnabled = false
         
-        rightButton = SKSpriteNode(imageNamed: "LeftButton")
+        rightButton = SKSpriteNode(imageNamed: "RightButton")
         rightButton.size = CGSize(width: WIDTH / 5.5, height: HEIGHT / 18)
-        rightButton.position = CGPoint(x: -WIDTH * (38 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 16)
+        rightButton.position = CGPoint(x: -WIDTH * (15 / 100.0), y: PANEL_POSITION.y + PANEL_HEIGHT / 16)
+        rightButton.name = "right"
+        rightButton.isUserInteractionEnabled = false
+        
         
         functionsMap = [
             "j": j,
@@ -114,6 +113,14 @@ class GameScene: SKScene {
             "f": f,
             "left": left,
             "right": right
+        ]
+        
+        buttons = [
+            jButton,
+            cButton,
+            fButton,
+            leftButton,
+            rightButton
         ]
         
         self.addChild(panel)
@@ -131,6 +138,30 @@ class GameScene: SKScene {
         }
     }
     
+    func j() {
+        print("j")
+        return
+    }
+    
+    func c() {
+        print("c")
+        return
+    }
+    
+    func f() {
+        print("f")
+        return
+    }
+    
+    func left() {
+        print("left")
+        return
+    }
+    
+    func right() {
+        print("right")
+    }
+    
     
     func touchDown(atPoint pos : CGPoint) {
         
@@ -144,23 +175,67 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        for touch in touches {
+            checkForTouchInNodes(touch: touch)
+        }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        for touch in touches {
+            killExistingTouch(touch: touch)
+            checkForTouchInNodes(touch: touch)
+
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        for touch in touches {
+            killExistingTouch(touch: touch)
+        }
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         
     }
     
+    func checkForTouchInNodes(touch: UITouch) {
+        let touchedNodes = self.nodes(at: touch.location(in: self))
+        for node in touchedNodes {
+            if let spritenode = node as? SKSpriteNode {
+                if let name = spritenode.name {
+                    for button in buttons {
+                        if name == button.name {
+                            updateActions[name] = touch
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func killExistingTouch(touch: UITouch) {
+        for (action, _touch) in updateActions {
+            if touch == _touch {
+                updateActions[action] = nil
+            }
+        }
+    }
+    
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        if DEBUG {
+            for (key, value) in updateActions {
+                if value != nil {
+                    print(key)
+                }
+            }
+        }
+        
+        for (action, touch) in updateActions {
+            if touch != nil {
+                functionsMap[action]!()
+            }
+        }
     }
 }
